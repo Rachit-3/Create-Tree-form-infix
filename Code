@@ -1,0 +1,62 @@
+package tree;
+
+
+class treee
+{
+    char data;
+    treee left;
+    treee right;
+    treee (char data)
+    {
+        this.data=data;
+    }
+
+}
+public class CreateFromInfix {
+    public static int  lowprior(String s ,int first,int  end)
+    {
+        int a=first;
+        for(int i=first;i<=end;i++)
+        {
+            if(!Character.isAlphabetic(s.charAt(i))) {
+                if (s.charAt(i) == '-' || s.charAt(i) == '+')
+                    a = i;
+                else if (s.charAt(a) == '/' || s.charAt(a) == '*'|| Character.isAlphabetic(s.charAt(a))) {
+                    if (s.charAt(i) == '/' || s.charAt(i) == '*')
+                        a = i;
+
+                }
+            }
+                else if(Character.isAlphabetic(s.charAt(a)))
+                    a=i;
+
+
+        }
+        return a;
+    }
+
+    public static treee create(String s, int fin, int lin,int index)
+    {
+        if(fin>lin)
+            return null;
+        if(index==s.length())
+            return null;
+        int lowp=lowprior(s,fin,lin);
+//        System.out.println(s.charAt(lowp));
+
+        treee root = new treee(s.charAt(lowp));
+        index++;
+//    System.out.println(root.data);
+        root.left=create(s,fin,lowp-1,index);
+        root.right=create(s,lowp+1,lin,index);
+
+        return root;
+    }
+
+    public static void main(String[] args) {
+        String s = "a+b*c-d/f+g*t-h";
+        treee root = create(s, 0, s.length() - 1,0);
+
+    }
+}
+
